@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Edwin Bello — Data Analytics Field Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:      #EFECE2;
+    --paper-dark: #E4E0D1;
+    --paper-deep: #DAD5C2;
+    --ink:        #1E2A2C;
+    --ink-soft:   #4A5557;
+    --line:       #C7C1AC;
+    --teal:       #0B6E62;
+    --teal-dark:  #084F47;
+    --ochre:      #AD7B1E;
+    --brick:      #9A3E36;
+    --serif:      'Fraunces', serif;
+    --sans:       'IBM Plex Sans', sans-serif;
+    --mono:       'IBM Plex Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-attachment: fixed;
+    background-position: -1px -1px;
+  }
+
+  a { color: inherit; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    /* sits below the static name banner */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(239,236,226,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .nav-mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .nav-mark span { color: var(--teal); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* ============ HERO ============ */
+  #hero {
+    padding: 90px 48px 70px;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--teal-dark);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--brick);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(34px, 4.4vw, 54px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--teal-dark);
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 36px;
+  }
+  .stat-strip .s-num {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .stat-strip .s-label {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* Specimen stamp card */
+  .specimen {
+    background: var(--paper-dark);
+    border: 1.5px solid var(--ink);
+    padding: 26px 26px 22px;
+    transform: rotate(-1.3deg);
+    position: relative;
+    box-shadow: 5px 6px 0 rgba(30,42,44,0.12);
+    margin-top: 8px;
+  }
+  .specimen::before {
+    content: '';
+    position: absolute;
+    top: -10px; right: 22px;
+    width: 0; height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid var(--brick);
+  }
+  .specimen-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .specimen-stamp {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--teal-dark);
+    letter-spacing: 0.01em;
+    transform: rotate(-3deg);
+    display: inline-block;
+    border: 2.5px solid var(--teal-dark);
+    padding: 4px 14px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+  .specimen-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(30,42,44,0.12);
+  }
+  .specimen-row:last-child { border: none; }
+  .specimen-row b { color: var(--ink-soft); font-weight: 400; }
+
+  /* ============ SECTION SHARED ============ */
+  section { padding: 64px 48px; max-width: 1180px; margin: 0 auto; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 44px;
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 14px;
+  }
+  .sec-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--brick);
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 27px;
+    color: var(--ink);
+  }
+  .sec-tag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ============ WORKFLOW ============ */
+  .workflow {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+    background: var(--ink);
+  }
+  .wf-step {
+    background: var(--paper);
+    padding: 26px 18px;
+    position: relative;
+  }
+  .wf-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--brick);
+    margin-bottom: 14px;
+  }
+  .wf-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .wf-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ============ FINDINGS ============ */
+  .findings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--ink);
+  }
+  .finding-card {
+    background: var(--paper);
+    padding: 32px;
+  }
+  .finding-card h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .finding-card .fc-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 18px;
+  }
+  .bar-row { margin-bottom: 9px; }
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .bar-track {
+    height: 9px;
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+  }
+  .bar-fill { height: 100%; }
+  .finding-card p.fc-text {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-top: 18px;
+    border-top: 1px dashed var(--line);
+    padding-top: 14px;
+  }
+  .city-table {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    border-collapse: collapse;
+  }
+  .city-table td { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .city-table td:last-child { text-align: right; color: var(--teal-dark); font-weight: 600; }
+
+  /* ============ DELIVERABLE ============ */
+  .deliverable {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .checklist li:last-child { border: none; }
+  .check-mark {
+    font-family: var(--mono);
+    color: var(--teal-dark);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .checklist li b { color: var(--ink); }
+  .checklist li span { color: var(--ink-soft); }
+  .note-box {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--brick);
+    padding: 18px 20px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .note-box b { color: var(--ink); }
+
+  /* ============ RECOMMENDATIONS ============ */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .rec-card {
+    border: 1.5px solid var(--ink);
+    padding: 28px;
+    background: var(--paper-dark);
+  }
+  .rec-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .rec-card h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .rec-card p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; }
+
+  /* ============ CREDENTIAL ============ */
+  .cred-strip {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border: 1.5px solid var(--ink);
+    padding: 28px 32px;
+    background: var(--paper-dark);
+  }
+  .cred-badge {
+    width: 64px; height: 64px;
+    border: 2.5px solid var(--teal-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--teal-dark);
+    flex-shrink: 0;
+    background: var(--paper);
+  }
+  .cred-text h3 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .cred-text p { font-size: 13px; color: var(--ink-soft); }
+  .cred-text .cred-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--brick);
+    margin-top: 4px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 48px;
+    border-top: 1.5px solid var(--ink);
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  footer .f-left p {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  footer .f-left span { font-size: 12.5px; color: var(--ink-soft); }
+  .f-links { display: flex; gap: 22px; }
+  .f-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+    margin-right: 22px;
+  }
+  .f-links a:last-child { margin-right: 0; }
+
+  /* ============ NAME BANNER ============ */
+  .name-banner {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .name-banner-label {
+    color: var(--paper-deep);
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    opacity: 0.6;
+    margin-right: 18px;
+  }
+  .name-banner-label::after {
+    content: '·';
+    margin-left: 18px;
+    opacity: 0.4;
+  }
+  .name-banner-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--paper);
+    letter-spacing: 0.01em;
+    flex: 1;
+  }
+  .name-banner-right {
+    font-size: 11px;
+    color: var(--paper-deep);
+    opacity: 0.55;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 860px) {
+    nav { padding: 14px 22px; }
+    .nav-links { display: none; }
+    section, #hero { padding: 48px 22px; }
+    #hero { grid-template-columns: 1fr; }
+    .stat-strip { grid-template-columns: repeat(2, auto); row-gap: 20px; }
+    .workflow { grid-template-columns: repeat(2, 1fr); }
+    .findings-grid, .deliverable, .rec-grid { grid-template-columns: 1fr; }
+    .specimen { transform: rotate(0); }
+    .name-banner { padding: 10px 22px; }
+    .name-banner-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="name-banner">
+  <span class="name-banner-label">Data Analytics Portfolio</span>
+  <span class="name-banner-name">Edwin Necosia Bello</span>
+  <span class="name-banner-right">Metro Cebu · 2026</span>
+</div>
+
+<nav>
+  <span class="nav-mark">FIELD<span>·</span>STUDY_01</span>
+  <ul class="nav-links">
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#credential">Credential</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div>
+    <div class="eyebrow">TESDA Data Analytics Level III · Capstone Field Study</div>
+    <h1>I asked 252 people in Metro Cebu about their SIM cards. Here's what the data says.</h1>
+    <p class="hero-sub">A self-directed survey-to-dashboard project — from door-to-door data collection across six cities to a working Excel dashboard with slicers, built end-to-end as part of my Data Analytics training.</p>
+    <div class="stat-strip">
+      <div><div class="s-num">252</div><div class="s-label">Respondents</div></div>
+      <div><div class="s-num">6</div><div class="s-label">Cities Surveyed</div></div>
+      <div><div class="s-num">82.5%</div><div class="s-label">Satisfaction Rate</div></div>
+      <div><div class="s-num">50/50</div><div class="s-label">Gender Split</div></div>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-tag"><span>Specimen Record</span><span>Cebu, PH</span></div>
+    <div class="specimen-stamp">VERIFIED</div>
+    <div class="specimen-row"><b>Study</b><span>SIM Usage &amp; Satisfaction</span></div>
+    <div class="specimen-row"><b>Method</b><span>Field + Online Survey</span></div>
+    <div class="specimen-row"><b>Sample</b><span>n = 252</span></div>
+    <div class="specimen-row"><b>Region</b><span>Metro Cebu</span></div>
+    <div class="specimen-row"><b>Status</b><span>Complete · 2026</span></div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>The Workflow</h2>
+    <span class="sec-tag">Six Stages · Survey to Dashboard</span>
+  </div>
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-num">01 / DESIGN</div>
+      <div class="wf-title">Survey</div>
+      <div class="wf-desc">Built a 9-question survey covering network use, habits, and satisfaction.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">02 / COLLECT</div>
+      <div class="wf-title">Field Data</div>
+      <div class="wf-desc">Gathered 252 responses face-to-face and online across six Metro Cebu cities.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">03 / CLEAN</div>
+      <div class="wf-title">Standardize</div>
+      <div class="wf-desc">Removed duplicates, fixed inconsistent labels, validated every field.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">04 / ANALYZE</div>
+      <div class="wf-title">KPIs &amp; Stats</div>
+      <div class="wf-desc">Computed KPIs, descriptive statistics, and pivot table cross-tabs.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">05 / VISUALIZE</div>
+      <div class="wf-title">Charts</div>
+      <div class="wf-desc">Built five charts mapping network share, satisfaction, and usage.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">06 / DELIVER</div>
+      <div class="wf-title">Dashboard</div>
+      <div class="wf-desc">Packaged it all into a one-page interactive dashboard with slicers.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2>Key Findings</h2>
+    <span class="sec-tag">From the Raw Numbers</span>
+  </div>
+  <div class="findings-grid">
+
+    <div class="finding-card">
+      <h3>Network Market Share</h3>
+      <div class="fc-meta">Main SIM Network · n = 252</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Globe</span><span>25.4%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:25.4%; background:var(--teal-dark);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>DITO</span><span>20.6%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:20.6%; background:var(--teal);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>TM</span><span>18.7%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:18.7%; background:var(--ochre);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>TNT</span><span>16.7%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:16.7%; background:var(--ochre);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Smart</span><span>16.3%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:16.3%; background:var(--ochre);"></div></div>
+      </div>
+      <p class="fc-text">Globe leads, but DITO — a network barely five years old — already holds a clear No. 2, ahead of three long-established players.</p>
+    </div>
+
+    <div class="finding-card">
+      <h3>Satisfaction Split</h3>
+      <div class="fc-meta">Overall Satisfaction · n = 252</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Satisfied</span><span>45.2%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:45.2%; background:var(--teal-dark);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Very Satisfied</span><span>37.3%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:37.3%; background:var(--teal);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Neutral</span><span>17.5%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:17.5%; background:var(--brick);"></div></div>
+      </div>
+      <p class="fc-text">82.5% are Satisfied or better — but only 1 in 3 are genuinely delighted. The Neutral 17.5% is the segment most at risk of switching.</p>
+    </div>
+
+    <div class="finding-card">
+      <h3>How People Actually Use Their SIM</h3>
+      <div class="fc-meta">Most Used Mobile Service · n = 252</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Mobile Wallet</span><span>23.4%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:23.4%; background:var(--teal-dark);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Social Media</span><span>19.8%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:19.8%; background:var(--teal);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Mobile Data</span><span>19.4%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:19.4%; background:var(--ochre);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Calls</span><span>18.7%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:18.7%; background:var(--ochre);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Text Messaging</span><span>15.1%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:15.1%; background:var(--ochre);"></div></div>
+      </div>
+      <p class="fc-text">Mobile Wallets edged out calls and texting for the top spot — the SIM card has quietly become a financial tool first.</p>
+    </div>
+
+    <div class="finding-card">
+      <h3>Network Leadership by City</h3>
+      <div class="fc-meta">Top Network per City · 6 Cities</div>
+      <table class="city-table">
+        <tr><td>Cebu City</td><td>Globe</td></tr>
+        <tr><td>Talisay City</td><td>Globe</td></tr>
+        <tr><td>Mandaue City</td><td>DITO</td></tr>
+        <tr><td>Lapu-Lapu City</td><td>Smart</td></tr>
+        <tr><td>Liloan</td><td>DITO</td></tr>
+        <tr><td>Minglanilla</td><td>Globe</td></tr>
+      </table>
+      <p class="fc-text">No single provider wins everywhere. Network dominance shifts city by city — a pattern that only shows up once you cross-tabulate.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- DASHBOARD / DELIVERABLE -->
+<section id="dashboard">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2>The Dashboard</h2>
+    <span class="sec-tag">One-Page Excel Deliverable</span>
+  </div>
+  <div class="deliverable">
+    <ul class="checklist">
+      <li><span class="check-mark">✓</span><div><b>4 KPI cards</b> — <span>Total respondents, satisfaction rate, top network, avg. active SIMs</span></div></li>
+      <li><span class="check-mark">✓</span><div><b>5 embedded charts</b> — <span>Network share, satisfaction split, service usage, load frequency, city distribution</span></div></li>
+      <li><span class="check-mark">✓</span><div><b>1 pivot table</b> — <span>Satisfaction cross-tabulated by network</span></div></li>
+      <li><span class="check-mark">✓</span><div><b>3 interactive slicers</b> — <span>Filter by network, city, and gender</span></div></li>
+      <li><span class="check-mark">✓</span><div><b>3 written insights</b> — <span>Grounded directly in the cleaned dataset</span></div></li>
+      <li><span class="check-mark">✓</span><div><b>2 recommendations</b> — <span>Actionable steps for telecom providers</span></div></li>
+    </ul>
+    <div class="note-box">
+      <b>On data privacy:</b> All 252 responses were anonymized before analysis — no names or personally identifying details appear in the working dataset, in line with the Data Privacy Act of 2012 (RA 10173). Every respondent gave informed consent before participating.
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2>Recommendations</h2>
+    <span class="sec-tag">What the Data Suggests</span>
+  </div>
+  <div class="rec-grid">
+    <div class="rec-card">
+      <div class="rec-tag">Recommendation 01</div>
+      <h3>Bundle Data with Wallet Rewards</h3>
+      <p>Mobile Wallet and Mobile Data together account for over 40% of primary usage. Providers could pair generous data allowances with wallet cashback or load incentives — directly targeting the two most common behaviors in the dataset.</p>
+    </div>
+    <div class="rec-card">
+      <div class="rec-tag">Recommendation 02</div>
+      <h3>Engage the Neutral Segment Early</h3>
+      <p>The 17.5% Neutral respondents are not dissatisfied — but they're not loyal either. Targeted retention efforts here, before a competitor's offer arrives, would cost far less than winning them back later.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIAL -->
+<section id="credential">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2>Credential</h2>
+    <span class="sec-tag">Where This Came From</span>
+  </div>
+  <div class="cred-strip">
+    <div class="cred-badge">L III</div>
+    <div class="cred-text">
+      <h3>Data Analytics Level III</h3>
+      <p>TESDA — completed as a hands-on capstone, applying the full survey-to-dashboard workflow to a real, self-collected dataset rather than a pre-packaged one.</p>
+      <div class="cred-date">Issued May 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <p>Edwin Necosia Bello</p>
+    <span>Data Analytics Field Study · TESDA Level III · Metro Cebu · 2026</span>
+  </div>
+  <div class="f-links">
+    <a href="mailto:edconnect29@yahoo.com">Email</a>
+    <a href="https://linkedin.com/in/edwinbello" target="_blank">LinkedIn</a>
+    <a href="https://wynnsben.github.io" target="_blank">Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>
