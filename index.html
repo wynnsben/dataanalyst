@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -412,6 +413,150 @@
     margin-top: 4px;
   }
 
+  /* ============ CERTIFICATE FRAME ============ */
+  .cert-frame {
+    border: 1.5px solid var(--ink);
+    background: var(--paper-dark);
+    overflow: hidden;
+  }
+  .cert-frame-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--paper-deep);
+  }
+  .cert-view-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal-dark);
+    text-decoration: none;
+    border: 1px solid var(--teal-dark);
+    padding: 4px 12px;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+  }
+  .cert-view-btn:hover { background: rgba(11,110,98,0.08); }
+  .cert-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: zoom-in;
+    transition: opacity 0.2s;
+  }
+  .cert-img:hover { opacity: 0.92; }
+  .cert-frame-foot {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 20px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    background: var(--paper-deep);
+  }
+
+  /* LIGHTBOX */
+  .cert-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,14,14,0.88);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    cursor: zoom-out;
+  }
+  .cert-lightbox.open { display: flex; }
+  .cert-lightbox-inner {
+    position: relative;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .cert-lightbox-inner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 2px solid var(--ink);
+  }
+  .cert-close {
+    position: absolute;
+    top: -44px; right: 0;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+  .cert-close:hover { background: rgba(255,255,255,0.1); }
+
+  /* ============ DATASET BLOCK ============ */
+  .dataset-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1.5px solid var(--ink);
+    padding: 24px 28px;
+    background: var(--paper-dark);
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .dataset-icon { flex-shrink: 0; }
+  .dataset-info { flex: 1; min-width: 200px; }
+  .dataset-title {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .dataset-meta {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .dataset-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .dataset-tags span {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal-dark);
+    border: 1px solid var(--teal-dark);
+    padding: 2px 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .dataset-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--paper);
+    background: var(--teal-dark);
+    text-decoration: none;
+    padding: 12px 22px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    border: 1.5px solid var(--teal-dark);
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .dataset-btn:hover {
+    background: transparent;
+    color: var(--teal-dark);
+  }
+
   /* ============ FOOTER ============ */
   footer {
     padding: 48px;
@@ -697,6 +842,26 @@
       <b>On data privacy:</b> All 252 responses were anonymized before analysis — no names or personally identifying details appear in the working dataset, in line with the Data Privacy Act of 2012 (RA 10173). Every respondent gave informed consent before participating.
     </div>
   </div>
+
+  <!-- Excel Download -->
+  <div class="dataset-block">
+    <div class="dataset-icon">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="4" fill="#1D6F42"/>
+        <path d="M8 8h10l6 6v10H8V8z" fill="none" stroke="white" stroke-width="1.5"/>
+        <path d="M18 8v6h6" fill="none" stroke="white" stroke-width="1.5"/>
+        <path d="M11 17l4 5M15 17l-4 5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="dataset-info">
+      <div class="dataset-title">Cleaned_Surveyfinal.xlsx</div>
+      <div class="dataset-meta">Microsoft Excel · 252 rows · 9 columns · Metro Cebu SIM Survey · 2026</div>
+      <div class="dataset-tags">
+        <span>Raw Data</span><span>Pivot Tables</span><span>Charts</span><span>Slicers</span>
+      </div>
+    </div>
+    <a href="Cleaned_Surveyfinal.xlsx" download class="dataset-btn">↓ Download Dataset</a>
+  </div>
 </section>
 
 <!-- RECOMMENDATIONS -->
@@ -725,14 +890,46 @@
   <div class="sec-head">
     <span class="sec-num">05</span>
     <h2>Credential</h2>
-    <span class="sec-tag">Where This Came From</span>
+    <span class="sec-tag">Certificate of Training · TESDA</span>
   </div>
-  <div class="cred-strip">
+
+  <div class="cred-strip" style="margin-bottom: 28px;">
     <div class="cred-badge">L III</div>
     <div class="cred-text">
-      <h3>Data Analytics Level III</h3>
-      <p>TESDA — completed as a hands-on capstone, applying the full survey-to-dashboard workflow to a real, self-collected dataset rather than a pre-packaged one.</p>
-      <div class="cred-date">Issued May 2026</div>
+      <h3>Data Analytics Level III — TESDA TWSP Scholar</h3>
+      <p>Issued by the Technical Education and Skills Development Authority (TESDA) in partnership with GFG Assessment &amp; Training Center Corp. Completed a 120-hour program covering statistical analysis, data preparation, and visualization.</p>
+      <div class="cred-date" style="display:flex; gap:24px; flex-wrap:wrap; margin-top:10px;">
+        <span>ULI: BEN-78-325-07022-001</span>
+        <span>CTPR No: NTR No. 202507220028</span>
+        <span>Training: 05/06/2026 – 05/22/2026</span>
+        <span>Cert No: BSRS-2026-07-22-343254</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Image -->
+  <div class="cert-frame">
+    <div class="cert-frame-label">
+      <span>Certificate of Training</span>
+      <a href="tesda-certificate.jpg" target="_blank" class="cert-view-btn">↗ View Full Size</a>
+    </div>
+    <img
+      src="tesda-certificate.jpg"
+      alt="TESDA Certificate of Training — Edwin Necosia Bello — Data Analytics Level III"
+      class="cert-img"
+      onclick="openCertLightbox()"
+    />
+    <div class="cert-frame-foot">
+      <span>Given July 10, 2026 · Oakridge IT Center 2, Mandaue City, Cebu</span>
+      <span>Signed by TESDA Director General Jose Francisco "Kiko" B. Benitez</span>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="cert-lightbox" id="certLightbox" onclick="closeCertLightbox()">
+    <div class="cert-lightbox-inner">
+      <button class="cert-close" onclick="closeCertLightbox()">✕ Close</button>
+      <img src="tesda-certificate.jpg" alt="TESDA Certificate — Edwin Necosia Bello"/>
     </div>
   </div>
 </section>
@@ -750,5 +947,18 @@
   </div>
 </footer>
 
+<script>
+  function openCertLightbox() {
+    document.getElementById('certLightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCertLightbox() {
+    document.getElementById('certLightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeCertLightbox();
+  });
+</script>
 </body>
 </html>
